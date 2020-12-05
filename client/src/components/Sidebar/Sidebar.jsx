@@ -53,11 +53,12 @@ class Sidebar extends Component {
               if (!prop.redirect)
                 return (
                   <li
-                    className={
-                      prop.upgrade
-                        ? "active active-pro"
-                        : this.activeRoute(prop.layout + prop.path)
-                    }
+                    //TODO fix is active tab bug
+                    // className={
+                    //   prop.upgrade
+                    //     ? "active active-pro"
+                    //     : this.activeRoute(prop.layout + prop.path)
+                    // }
                     key={key}
                   >
                     <NavLink

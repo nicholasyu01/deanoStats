@@ -6,6 +6,8 @@ import Icons from "views/Icons.jsx";
 import Maps from "views/Maps.jsx";
 import Notifications from "views/Notifications.jsx";
 import Upgrade from "views/Upgrade.jsx";
+import TableList2 from "views/TableList2.jsx";
+
 
 const dashboardRoutes = [
   {
@@ -65,6 +67,14 @@ const dashboardRoutes = [
   //   component: Upgrade,
   //   layout: "/admin"
   // }
+  //TODO look into the naming convention of props brandtext as table is shown with tablee and table2
+  {
+    path: "/stats",
+    name: "League Stats",
+    icon: "pe-7s-note2",
+    component: TableList2,
+    layout: "/admin"
+  },
 ];
 
 export default dashboardRoutes;
