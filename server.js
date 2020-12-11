@@ -6,6 +6,7 @@ const path = require("path");
 
 const users = require("./routes/api/users");
 const todoRoutes = require("./routes/api/todos");
+const teams = require("./routes/api/teams");
 
 const app = express();
 
@@ -37,6 +38,7 @@ require("./config/passport")(passport);
 // Routes
 app.use('/api/todos', todoRoutes);
 app.use("/api/users", users);
+app.use('/api/teams', teams);
 
 //serve static assets if in production
 if(process.env.NODE_ENV === 'production') {
