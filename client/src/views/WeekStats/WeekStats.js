@@ -1,27 +1,31 @@
 import React from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
-import Button from "components/CustomButtons/Button.js";
+import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
-import CardFooter from "components/Card/CardFooter.js";
 
-import avatar from "assets/img/faces/marc.jpg";
+import CustomInput from "components/CustomInput/CustomInput.js";
+import Button from "components/CustomButtons/Button.js";
+import CardAvatar from "components/Card/CardAvatar.js";
+import CardFooter from "components/Card/CardFooter.js";
 
 const styles = {
   cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    marginBottom: "0"
+    "&,& a,& a:hover,& a:focus": {
+      color: "rgba(255,255,255,.62)",
+      margin: "0",
+      fontSize: "14px",
+      marginTop: "0",
+      marginBottom: "0"
+    },
+    "& a,& a:hover,& a:focus": {
+      color: "#FFFFFF"
+    }
   },
   cardTitleWhite: {
     color: "#FFFFFF",
@@ -30,18 +34,24 @@ const styles = {
     fontWeight: "300",
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     marginBottom: "3px",
-    textDecoration: "none"
+    textDecoration: "none",
+    "& small": {
+      color: "#777",
+      fontSize: "65%",
+      fontWeight: "400",
+      lineHeight: "1"
+    }
   }
 };
 
 const useStyles = makeStyles(styles);
 
-export default function UserProfile() {
+export default function WeekStats() {
   const classes = useStyles();
   return (
-    <div>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
+    
+    <GridContainer>
+      <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardBody>
             <div className={classes.typo}>
@@ -134,7 +144,27 @@ export default function UserProfile() {
             </CardFooter>
           </Card>
         </GridItem>
-      </GridContainer>
-    </div>
+      <GridItem xs={12} sm={12} md={12}>
+        <Card>
+          <CardBody>
+            <div className={classes.typo}>
+              <h3>Week Stats</h3>
+            </div>
+            <Table
+              tableHeaderColor="primary"
+              tableHead={["Name", "Country", "City", "Salary"]}
+              tableData={[
+                ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"],
+                ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
+                ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"],
+                ["Philip Chaney", "Korea, South", "Overland Park", "$38,735"],
+                ["Doris Greene", "Malawi", "Feldkirchen in Kärnten", "$63,542"],
+                ["Mason Porter", "Chile", "Gloucester", "$78,615"]
+              ]}
+            />
+          </CardBody>
+        </Card>
+      </GridItem>
+    </GridContainer>
   );
 }
