@@ -14,6 +14,16 @@ import Button from "components/CustomButtons/Button.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardFooter from "components/Card/CardFooter.js";
 
+import TextField from '@material-ui/core/TextField';
+
+import axios from 'axios';
+
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
+
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -41,129 +51,90 @@ const styles = {
       fontWeight: "400",
       lineHeight: "1"
     }
-  }
+  },
+  formControl: {
+    minWidth: 120,
+  },
 };
 
 const useStyles = makeStyles(styles);
 
 export default function WeekStats() {
   const classes = useStyles();
+
+  const onSubmit = (event) => {
+    event.preventDefault()
+
+    const data = {
+      title: event.target.title.value,
+      name: event.target.name.value
+    }
+    console.log(data);
+    axios.post('/api/postGame', data)
+      .then(response => console.log(response))
+      .catch((err) => console.log(err));
+  }
+
+  const [state, setState] = React.useState({
+    age: '',
+    name: 'hai',
+  });
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    setState({
+      ...state,
+      [name]: event.target.value,
+    });
+  };
+
   return (
-    
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
+        <form onSubmit={onSubmit}>
           <Card>
             <CardBody>
-            <div className={classes.typo}>
-              <h3>Enter Game</h3>
-            </div>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={5}>
-                  <CustomInput
-                    labelText="Company (disabled)"
-                    id="company-disabled"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    inputProps={{
-                      disabled: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
-                  <CustomInput
-                    labelText="Username"
-                    id="username"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Email address"
-                    id="email-address"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="First Name"
-                    id="first-name"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="Last Name"
-                    id="last-name"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="City"
-                    id="city"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Country"
-                    id="country"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Postal Code"
-                    id="postal-code"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
+              <div className={classes.typo}>
+                <h3>Week Stats</h3>
+              </div>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="age-native-simple">Week</InputLabel>
+                <Select
+                  native
+                  value={state.age}
+                  onChange={handleChange}
+                  inputProps={{
+                    name: 'age',
+                    id: 'age-native-simple',
+                  }}
+                >
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                </Select>
+              </FormControl>
+              <Table
+                tableHeaderColor="primary"
+                tableHead={["Name", "Country", "City", "Salary"]}
+                tableData={[
+                  ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"],
+                  ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
+                  ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"]
+                ]}
+              />
+              <div className={classes.typo}>
+                <h3>Enter Game</h3>
+              </div>
+              <TextField
+                id="title"
+                label="Home Team"
+              />
             </CardBody>
             <CardFooter>
-              <Button color="primary">Update Profile</Button>
+              <Button type="submit" color="primary">Update Profile</Button>
             </CardFooter>
           </Card>
-        </GridItem>
-      <GridItem xs={12} sm={12} md={12}>
-        <Card>
-          <CardBody>
-            <div className={classes.typo}>
-              <h3>Week Stats</h3>
-            </div>
-            <Table
-              tableHeaderColor="primary"
-              tableHead={["Name", "Country", "City", "Salary"]}
-              tableData={[
-                ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"],
-                ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
-                ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"],
-                ["Philip Chaney", "Korea, South", "Overland Park", "$38,735"],
-                ["Doris Greene", "Malawi", "Feldkirchen in Kärnten", "$63,542"],
-                ["Mason Porter", "Chile", "Gloucester", "$78,615"]
-              ]}
-            />
-          </CardBody>
-        </Card>
+        </form>
       </GridItem>
     </GridContainer>
   );
