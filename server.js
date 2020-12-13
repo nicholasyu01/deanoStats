@@ -7,6 +7,7 @@ const path = require("path");
 const users = require("./routes/api/users");
 const todoRoutes = require("./routes/api/todos");
 const teams = require("./routes/api/teams");
+const week = require("./routes/api/weeks");
 
 const app = express();
 
@@ -39,6 +40,7 @@ require("./config/passport")(passport);
 app.use('/api/todos', todoRoutes);
 app.use("/api/users", users);
 app.use('/api/teams', teams);
+app.use('/api/weeks', week);
 
 //serve static assets if in production
 if(process.env.NODE_ENV === 'production') {
