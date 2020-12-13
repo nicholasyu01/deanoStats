@@ -53,7 +53,7 @@ const styles = {
     }
   },
   formControl: {
-    minWidth: 120,
+    minWidth: 120
   },
 };
 
@@ -125,13 +125,95 @@ export default function WeekStats() {
               <div className={classes.typo}>
                 <h3>Enter Game</h3>
               </div>
-              <TextField
-                id="title"
-                label="Home Team"
-              />
+              <div class="container" style={{display: 'flex', flexDirection:'column'}}>
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="age-native-simple">Home</InputLabel>
+                  <Select
+                    native
+                    value={state.age}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: 'age',
+                      id: 'age-native-simple',
+                    }}
+                  >
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                  </Select>
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="age-native-simple">Away</InputLabel>
+                  <Select
+                    native
+                    value={state.age}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: 'age',
+                      id: 'age-native-simple',
+                    }}
+                  >
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                  </Select>
+                </FormControl>
+                <TextField
+                  id="title"
+                  label="Home pts"
+                />
+                <TextField
+                  id="title"
+                  label="Away pts"
+                />
+                <TextField
+                  id="title"
+                  label="Home spread"
+                />
+                <TextField
+                  id="title"
+                  label="Away spread"
+                />
+                <TextField
+                  id="title"
+                  label="Under Over"
+                />
+                <TextField
+                  id="title"
+                  label="Home pass (offense)"
+                />
+                <TextField
+                  id="title"
+                  label="Home rush (offense)"
+                />
+                <TextField
+                  id="title"
+                  label="Away pass (offense)"
+                />
+                <TextField
+                  id="title"
+                  label="Away rush (offense)"
+                />
+                <TextField
+                  id="title"
+                  label="Home sacked"
+                />
+                <TextField
+                  id="title"
+                  label="Away sacked"
+                />
+                <TextField
+                  id="title"
+                  label="Home turn overs"
+                />
+                <TextField
+                  id="title"
+                  label="Away turn overs"
+                />
+              </div>
             </CardBody>
             <CardFooter>
-              <Button type="submit" color="primary">Update Profile</Button>
+              <Button type="submit" color="info">Update Profile</Button>
             </CardFooter>
           </Card>
         </form>
