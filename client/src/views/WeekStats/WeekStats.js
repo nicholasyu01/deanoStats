@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -25,33 +25,6 @@ import Select from '@material-ui/core/Select';
 // import NativeSelect from '@material-ui/core/NativeSelect';
 
 const styles = {
-  cardCategoryWhite: {
-    "&,& a,& a:hover,& a:focus": {
-      color: "rgba(255,255,255,.62)",
-      margin: "0",
-      fontSize: "14px",
-      marginTop: "0",
-      marginBottom: "0"
-    },
-    "& a,& a:hover,& a:focus": {
-      color: "#FFFFFF"
-    }
-  },
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
-    "& small": {
-      color: "#777",
-      fontSize: "65%",
-      fontWeight: "400",
-      lineHeight: "1"
-    }
-  },
   formControl: {
     minWidth: 120
   },
@@ -75,13 +48,20 @@ export default function WeekStats() {
       .catch((err) => console.log(err));
   }
 
+  const [weeks, setWeeks] = useState([{weekNumber: ''}]);
+  const [week, setWeek] = useState();
 
 
-  const [state, setState] = React.useState({
-    age: '',
-    name: 'hai',
+    
+  const setWeekNumber = (event) => {
+    setWeek(event.target.value);
+  }
+
+  const [state, setState] = useState({
+    age: 'age',
+    name: '3',
   });
-
+  
   const handleChange = (event) => {
     const name = event.target.name;
     setState({
@@ -89,15 +69,22 @@ export default function WeekStats() {
       [name]: event.target.value,
     });
   };
-
+  
   useEffect(() => {
     axios.get('/api/weeks')
-      .then()
-      .catch(function (error) {
-        console.log(error);
-      });
+    .then(w => {
+      setWeeks( w.data );
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
   }, []);
-
+  
+  const print = (event) => {
+    console.log(weeks)
+    console.log(week)
+  }
+  
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -105,29 +92,30 @@ export default function WeekStats() {
           <Card>
             <CardBody>
               <div className={classes.typo}>
-                <h3>Week Stats</h3>
+                <h3>Week Stats, week: {weeks[week]?.weekNumber}</h3>
               </div>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="age-native-simple">Week</InputLabel>
                 <Select
                   native
-                  value={state.age}
-                  onChange={handleChange}
+                  // value={state.name} //sets which state is displayed
+                  onChange={setWeekNumber}
                   inputProps={{
-                    name: 'age',
+                    // name: 'name', //sets which state is changed
                     id: 'age-native-simple',
                   }}
                 >
-                  <option value={1}>1</option>
-                  <option value={2}>2</option>
-                  <option value={3}>3</option>
+                  <option aria-label="None" />
+                  <option value={0}>1</option>
+                  <option value={1}>2</option>
                 </Select>
+                <Button onClick={print} variant="contained" >print</Button>
               </FormControl>
               <Table
-                tableHeaderColor="primary"
-                tableHead={["Name", "Country", "City", "Salary"]}
+                tableHeaderColor="info"
+                tableHead={["GameId", "weekNumber", "City", "Salary"]}
                 tableData={[
-                  ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738"],
+                  ["Dakota Rice", , "Oud-Turnhout", "$36,738"],
                   ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
                   ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"]
                 ]}
@@ -172,7 +160,7 @@ export default function WeekStats() {
                   id="weekNumber"
                   label="weekNumber"
                 />
-                <TextField
+                {/* <TextField
                   id="title"
                   label="Home pts"
                 />
@@ -223,7 +211,7 @@ export default function WeekStats() {
                 <TextField
                   id="title"
                   label="Away turn overs"
-                />
+                /> */}
               </div>
             </CardBody>
             <CardFooter>
