@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
+// import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 // import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
@@ -24,6 +24,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 // import NativeSelect from '@material-ui/core/NativeSelect';
 
+import MyTable from "components/Table/MyTable.js";
 const styles = {
   formControl: {
     minWidth: 120
@@ -37,22 +38,22 @@ export default function WeekStats() {
 
   const onSubmit = (event) => {
     event.preventDefault()
-
     const data = {
-      weekNumber: event.target.weekNumber.value,
+      games: {
+        gameNumber: event.target.weekNumber.value,
+      }
     }
-
     console.log(data);
-    axios.post('/api/weeks/add', data)
-      .then(response => console.log(response))
+    axios.post('/api/weeks/update/' + weeks[week]?._id, data)
+      .then(response => 
+        updateWeeks()
+        )
       .catch((err) => console.log(err));
   }
 
-  const [weeks, setWeeks] = useState([{weekNumber: ''}]);
+  const [weeks, setWeeks] = useState([{ weekNumber: '' }]);
   const [week, setWeek] = useState();
 
-
-    
   const setWeekNumber = (event) => {
     setWeek(event.target.value);
   }
@@ -61,7 +62,7 @@ export default function WeekStats() {
     age: 'age',
     name: '3',
   });
-  
+
   const handleChange = (event) => {
     const name = event.target.name;
     setState({
@@ -69,22 +70,33 @@ export default function WeekStats() {
       [name]: event.target.value,
     });
   };
-  
+
+  function updateWeeks() {
+    axios.get('/api/weeks')
+      .then(w => {
+        setWeeks(w.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
     axios.get('/api/weeks')
-    .then(w => {
-      setWeeks( w.data );
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
+      .then(w => {
+        setWeeks(w.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
   }, []);
-  
+
   const print = (event) => {
     console.log(weeks)
     console.log(week)
+    console.log(weeks[week]?._id)
   }
-  
+
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -111,7 +123,7 @@ export default function WeekStats() {
                 </Select>
                 <Button onClick={print} variant="contained" >print</Button>
               </FormControl>
-              <Table
+              {/* <Table
                 tableHeaderColor="info"
                 tableHead={["GameId", "weekNumber", "City", "Salary"]}
                 tableData={[
@@ -119,6 +131,9 @@ export default function WeekStats() {
                   ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
                   ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"]
                 ]}
+              /> */}
+              <MyTable
+                weekData={weeks[week]}
               />
               <div className={classes.typo}>
                 <h3>Enter Game</h3>
