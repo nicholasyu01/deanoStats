@@ -1,29 +1,16 @@
 import React, { useState, useEffect } from "react";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-// core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-// import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
-// import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-
-// import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
-// import CardAvatar from "components/Card/CardAvatar.js";
 import CardFooter from "components/Card/CardFooter.js";
-
 import TextField from '@material-ui/core/TextField';
-
 import axios from 'axios';
-
 import InputLabel from '@material-ui/core/InputLabel';
-// import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-// import NativeSelect from '@material-ui/core/NativeSelect';
-
 import MyTable from "components/Table/MyTable.js";
 
 const styles = theme => ({
@@ -71,9 +58,8 @@ export default function WeekStats() {
 
       }
     }
-    console.log(data);
     axios.post('/api/weeks/update/' + weeks[week]?._id, data)
-      .then(response =>
+      .then(
         updateWeeks()
       )
       .catch((err) => console.log(err));
@@ -85,19 +71,6 @@ export default function WeekStats() {
   const setWeekNumber = (event) => {
     setWeek(event.target.value);
   }
-
-  const [state, setState] = useState({
-    age: 'age',
-    name: '3',
-  });
-
-  const handleChange = (event) => {
-    const name = event.target.name;
-    setState({
-      ...state,
-      [name]: event.target.value,
-    });
-  };
 
   function updateWeeks() {
     axios.get('/api/weeks')
@@ -118,6 +91,19 @@ export default function WeekStats() {
         console.log(error);
       })
   }, []);
+
+  const [state, setState] = useState({
+    age: 'age',
+    name: '3',
+  });
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    setState({
+      ...state,
+      [name]: event.target.value,
+    });
+  };
 
   const print = (event) => {
     console.log(weeks)
@@ -152,15 +138,6 @@ export default function WeekStats() {
                 </Select>
                 {/* <Button onClick={print} variant="contained" >print</Button> */}
               </FormControl>
-              {/* <Table
-                tableHeaderColor="info"
-                tableHead={["GameId", "weekNumber", "City", "Salary"]}
-                tableData={[
-                  ["Dakota Rice", , "Oud-Turnhout", "$36,738"],
-                  ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789"],
-                  ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142"]
-                ]}
-              /> */}
               <MyTable
                 weekData={weeks[week]}
               />

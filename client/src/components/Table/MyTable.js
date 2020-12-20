@@ -21,7 +21,7 @@ const styles = theme => ({
         },
     },
     container: {
-        padding: "10px",
+        padding: "5px",
     }
 });
 const useStyles = makeStyles(styles);
