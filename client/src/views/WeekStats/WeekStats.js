@@ -39,6 +39,7 @@ export default function WeekStats() {
   const onSubmit = (event) => {
     event.preventDefault()
     const data = {
+      weekNumber: 1 + parseInt(week, 10),
       games: {
         gameNumber: event.target.weekNumber.value,
       }
@@ -118,8 +119,9 @@ export default function WeekStats() {
                   }}
                 >
                   <option aria-label="None" />
-                  <option value={0}>1</option>
-                  <option value={1}>2</option>
+                  {weeks?.map((number, key) => (
+                    <option value={key}>{number.weekNumber}</option>
+                  ))}
                 </Select>
                 <Button onClick={print} variant="contained" >print</Button>
               </FormControl>
@@ -174,6 +176,7 @@ export default function WeekStats() {
                 <TextField
                   id="weekNumber"
                   label="weekNumber"
+                  type="number"
                 />
                 {/* <TextField
                   id="title"

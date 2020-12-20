@@ -29,8 +29,6 @@ export default function MyTable(props) {
                     <TableRow>
                         <TableCell>Game Number</TableCell>
                         <TableCell align="right">{weekData?.weekNumber}</TableCell>
-                        <TableCell align="right">{weekData?.weekNumber}</TableCell>
-                        <TableCell align="right">{weekData?.weekNumber}</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
