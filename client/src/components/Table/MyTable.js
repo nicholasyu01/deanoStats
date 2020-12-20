@@ -10,12 +10,25 @@ import TableCell from "@material-ui/core/TableCell";
 // core components
 import Button from "components/CustomButtons/Button.js";
 
-
-// const useStyles = makeStyles();
+const styles = theme => ({
+    border: {
+        [theme.breakpoints.down('md')]: {
+            borderTop: 0,
+            borderLeft: 1,
+            borderRight: 0,
+            boarderColor: 'black',
+            borderStyle: 'solid',
+        },
+    },
+    container: {
+        padding: "10px",
+    }
+});
+const useStyles = makeStyles(styles);
 
 export default function MyTable(props) {
     const { weekData } = props;
-    // const classes = useStyles();
+    const classes = useStyles(styles);
 
     const print = (event) => {
         console.log(weekData)
@@ -23,26 +36,46 @@ export default function MyTable(props) {
 
     //TODO make the table more module to be used by any data
     return (
-        <div>
-            <Table size="small" >
+        <div className={classes.container} style={{ overflowX: "auto" }}>
+            <Table >
                 <TableHead>
                     <TableRow>
-                        <TableCell>Game Number</TableCell>
-                        <TableCell align="right">{weekData?.weekNumber}</TableCell>
+                        <TableCell className={classes.border} padding="none">Game</TableCell>
+                        <TableCell className={classes.border} padding="none">homePoints</TableCell>
+                        <TableCell className={classes.border} padding="none">homeRY</TableCell>
+                        <TableCell className={classes.border} padding="none">homePY</TableCell>
+                        <TableCell className={classes.border} padding="none">homeSacks</TableCell>
+                        <TableCell className={classes.border} padding="none">homeTO</TableCell>
+                        <TableCell className={classes.border} padding="none">homeSpread</TableCell>
+                        <TableCell className={classes.border} padding="none">awayPoints</TableCell>
+                        <TableCell className={classes.border} padding="none">awayRY</TableCell>
+                        <TableCell className={classes.border} padding="none">awayPY</TableCell>
+                        <TableCell className={classes.border} padding="none">awaySacks</TableCell>
+                        <TableCell className={classes.border} padding="none">awayTO</TableCell>
+                        <TableCell className={classes.border} padding="none">awaySpread</TableCell>
+
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {weekData?.games.map((row, key) => (
+                    {weekData?.games.map((row) => (
                         <TableRow key={row.gameNumber}>
-                            <TableCell component="th" scope="row">
-                                {row.gameNumber}
-                            </TableCell>
-                            <TableCell align="right">{row.gameNumber}</TableCell>
+                            <TableCell className={classes.border} padding="none" >{row.gameNumber}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.homePoints}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.homeRY}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.homePY}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.homeSacks}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.homeTO}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.homeSpread}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.awayPoints}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.awayRY}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.awayPY}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.awaySacks}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.awayTO}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.awaySpread}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
-            <Button onClick={print} variant="contained" >print</Button>
         </div>
     );
 }

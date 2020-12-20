@@ -25,11 +25,25 @@ import Select from '@material-ui/core/Select';
 // import NativeSelect from '@material-ui/core/NativeSelect';
 
 import MyTable from "components/Table/MyTable.js";
-const styles = {
+
+const styles = theme => ({
   formControl: {
-    minWidth: 120
+    minWidth: 120,
+    margin: '5px'
   },
-};
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    [theme.breakpoints.down('sm')]: {
+      flexWrap: 'wrap',
+    },
+  },
+  column: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%'
+  },
+});
 
 const useStyles = makeStyles(styles);
 
@@ -41,14 +55,27 @@ export default function WeekStats() {
     const data = {
       weekNumber: 1 + parseInt(week, 10),
       games: {
-        gameNumber: event.target.weekNumber.value,
+        gameNumber: event.target.gameNumber.value,
+        homePoints: event.target.homePoints.value,
+        homeRY: event.target.homeRY.value,
+        homePY: event.target.homePY.value,
+        homeSacks: event.target.homeSacks.value,
+        homeTO: event.target.homeTO.value,
+        homeSpread: event.target.homeSpread.value,
+        awayPoints: event.target.awayPoints.value,
+        awayRY: event.target.awayRY.value,
+        awayPY: event.target.awayPY.value,
+        awaySacks: event.target.awaySacks.value,
+        awayTO: event.target.awayTO.value,
+        awaySpread: event.target.awaySpread.value,
+
       }
     }
     console.log(data);
     axios.post('/api/weeks/update/' + weeks[week]?._id, data)
-      .then(response => 
+      .then(response =>
         updateWeeks()
-        )
+      )
       .catch((err) => console.log(err));
   }
 
@@ -105,7 +132,7 @@ export default function WeekStats() {
           <Card>
             <CardBody>
               <div className={classes.typo}>
-                <h3>Week Stats, week: {weeks[week]?.weekNumber}</h3>
+                <h3><b>Week Stats</b> week: {weeks[week]?.weekNumber}</h3>
               </div>
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="age-native-simple">Week</InputLabel>
@@ -120,10 +147,10 @@ export default function WeekStats() {
                 >
                   <option aria-label="None" />
                   {weeks?.map((number, key) => (
-                    <option value={key}>{number.weekNumber}</option>
+                    <option key={key} value={key}>{number.weekNumber}</option>
                   ))}
                 </Select>
-                <Button onClick={print} variant="contained" >print</Button>
+                {/* <Button onClick={print} variant="contained" >print</Button> */}
               </FormControl>
               {/* <Table
                 tableHeaderColor="info"
@@ -140,96 +167,121 @@ export default function WeekStats() {
               <div className={classes.typo}>
                 <h3>Enter Game</h3>
               </div>
-              <div className="container" style={{ display: 'flex', flexDirection: 'column' }}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="age-native-simple">Home</InputLabel>
-                  <Select
-                    native
-                    value={state.age}
-                    onChange={handleChange}
-                    inputProps={{
-                      name: 'age',
-                      id: 'age-native-simple',
-                    }}
-                  >
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                  </Select>
-                </FormControl>
-                <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="age-native-simple">Away</InputLabel>
-                  <Select
-                    native
-                    value={state.age}
-                    onChange={handleChange}
-                    inputProps={{
-                      name: 'age',
-                      id: 'age-native-simple',
-                    }}
-                  >
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                  </Select>
-                </FormControl>
-                <TextField
-                  id="weekNumber"
-                  label="weekNumber"
-                  type="number"
-                />
-                {/* <TextField
-                  id="title"
-                  label="Home pts"
-                />
-                <TextField
-                  id="title"
-                  label="Away pts"
-                />
-                <TextField
-                  id="title"
-                  label="Home spread"
-                />
-                <TextField
-                  id="title"
-                  label="Away spread"
-                />
-                <TextField
-                  id="title"
-                  label="Under Over"
-                />
-                <TextField
-                  id="title"
-                  label="Home pass (offense)"
-                />
-                <TextField
-                  id="title"
-                  label="Home rush (offense)"
-                />
-                <TextField
-                  id="title"
-                  label="Away pass (offense)"
-                />
-                <TextField
-                  id="title"
-                  label="Away rush (offense)"
-                />
-                <TextField
-                  id="title"
-                  label="Home sacked"
-                />
-                <TextField
-                  id="title"
-                  label="Away sacked"
-                />
-                <TextField
-                  id="title"
-                  label="Home turn overs"
-                />
-                <TextField
-                  id="title"
-                  label="Away turn overs"
-                /> */}
+              <div className={classes.row}>
+                <div className={classes.column}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="age-native-simple">Home</InputLabel>
+                    <Select
+                      native
+                      value={state.age}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: 'age',
+                        id: 'age-native-simple',
+                      }}
+                    >
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                    </Select>
+                  </FormControl>
+                  <TextField
+                    className={classes.formControl}
+                    id="homePoints"
+                    label="Points"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="homeRY"
+                    label="Rushing Yards"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="homePY"
+                    label="Passing Yards"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="homeSacks"
+                    label="Sacks"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="homeTO"
+                    label="Turn Overs"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="homeSpread"
+                    label="Home Spread"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="gameNumber"
+                    label="game number"
+                    type="number"
+                  />
+                </div>
+                <div className={classes.column}>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="age-native-simple">Away</InputLabel>
+                    <Select
+                      native
+                      value={state.age}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: 'age',
+                        id: 'age-native-simple',
+                      }}
+                    >
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                    </Select>
+                  </FormControl>
+                  <TextField
+                    className={classes.formControl}
+                    id="awayPoints"
+                    label="Points"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="awayRY"
+                    label="Rushing Yards"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="awayPY"
+                    label="Passing Yards"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="awaySacks"
+                    label="Sacks"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="awayTO"
+                    label="Turn Overs"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="awaySpread"
+                    label="Away Spread"
+                    type="number"
+                  />
+                </div>
               </div>
             </CardBody>
             <CardFooter>
