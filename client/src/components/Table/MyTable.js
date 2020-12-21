@@ -1,14 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-// core components
-import Button from "components/CustomButtons/Button.js";
 
 const styles = theme => ({
     border: {
@@ -30,10 +26,6 @@ export default function MyTable(props) {
     const { weekData } = props;
     const classes = useStyles(styles);
 
-    const print = (event) => {
-        console.log(weekData)
-    }
-
     //TODO make the table more module to be used by any data
     return (
         <div className={classes.container} style={{ overflowX: "auto" }}>
@@ -41,12 +33,14 @@ export default function MyTable(props) {
                 <TableHead>
                     <TableRow>
                         <TableCell className={classes.border} padding="none">Game</TableCell>
+                        <TableCell className={classes.border} padding="none">homeTeam</TableCell>
                         <TableCell className={classes.border} padding="none">homePoints</TableCell>
                         <TableCell className={classes.border} padding="none">homeRY</TableCell>
                         <TableCell className={classes.border} padding="none">homePY</TableCell>
                         <TableCell className={classes.border} padding="none">homeSacks</TableCell>
                         <TableCell className={classes.border} padding="none">homeTO</TableCell>
                         <TableCell className={classes.border} padding="none">homeSpread</TableCell>
+                        <TableCell className={classes.border} padding="none">awayTeam</TableCell>
                         <TableCell className={classes.border} padding="none">awayPoints</TableCell>
                         <TableCell className={classes.border} padding="none">awayRY</TableCell>
                         <TableCell className={classes.border} padding="none">awayPY</TableCell>
@@ -60,12 +54,14 @@ export default function MyTable(props) {
                     {weekData?.games.map((row) => (
                         <TableRow key={row.gameNumber}>
                             <TableCell className={classes.border} padding="none" >{row.gameNumber}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.homeTeamName}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.homePoints}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.homeRY}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.homePY}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.homeSacks}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.homeTO}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.homeSpread}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.awayTeamName}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.awayPoints}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.awayRY}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.awayPY}</TableCell>

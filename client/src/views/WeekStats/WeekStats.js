@@ -43,19 +43,22 @@ export default function WeekStats() {
       weekNumber: 1 + parseInt(week, 10),
       games: {
         gameNumber: event.target.gameNumber.value,
+        homeTeamId: teams[homeTeam]?._id,
+        homeTeamName: teams[homeTeam]?.teamName,
         homePoints: event.target.homePoints.value,
         homeRY: event.target.homeRY.value,
         homePY: event.target.homePY.value,
         homeSacks: event.target.homeSacks.value,
         homeTO: event.target.homeTO.value,
         homeSpread: event.target.homeSpread.value,
+        awayTeamId: teams[awayTeam]?._id,
+        awayTeamName: teams[awayTeam]?.teamName,
         awayPoints: event.target.awayPoints.value,
         awayRY: event.target.awayRY.value,
         awayPY: event.target.awayPY.value,
         awaySacks: event.target.awaySacks.value,
         awayTO: event.target.awayTO.value,
         awaySpread: event.target.awaySpread.value,
-
       }
     }
     axios.post('/api/weeks/update/' + weeks[week]?._id, data)
@@ -65,11 +68,27 @@ export default function WeekStats() {
       .catch((err) => console.log(err));
   }
 
-  const [weeks, setWeeks] = useState([{ weekNumber: '' }]);
-  const [week, setWeek] = useState();
+  const [weeks, setWeeks] = useState([]);
+  const [week, setWeek] = useState("");
+  const [teams, setTeams] = useState([])
+  const [homeTeam, setHomeTeam] = useState();
+  const [awayTeam, setAwayTeam] = useState();
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const setWeekNumber = (event) => {
     setWeek(event.target.value);
+    if (event.target.value.length === 0)
+      setIsDisabled(true);
+    else
+      setIsDisabled(false);
+  }
+
+  const handleHomeTeam = (event) => {
+    setHomeTeam(event.target.value);
+  }
+
+  const handleAwayTeam = (event) => {
+    setAwayTeam(event.target.value);
   }
 
   function updateWeeks() {
@@ -90,22 +109,16 @@ export default function WeekStats() {
       .catch(function (error) {
         console.log(error);
       })
+    axios.get('/api/teams')
+      .then(teams => {
+        setTeams(teams.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
   }, []);
 
-  const [state, setState] = useState({
-    age: 'age',
-    name: '3',
-  });
-
-  const handleChange = (event) => {
-    const name = event.target.name;
-    setState({
-      ...state,
-      [name]: event.target.value,
-    });
-  };
-
-  const print = (event) => {
+  function print() {
     console.log(weeks)
     console.log(week)
     console.log(weeks[week]?._id)
@@ -124,19 +137,14 @@ export default function WeekStats() {
                 <InputLabel htmlFor="age-native-simple">Week</InputLabel>
                 <Select
                   native
-                  // value={state.name} //sets which state is displayed
                   onChange={setWeekNumber}
-                  inputProps={{
-                    // name: 'name', //sets which state is changed
-                    id: 'age-native-simple',
-                  }}
                 >
                   <option aria-label="None" />
                   {weeks?.map((number, key) => (
-                    <option key={key} value={key}>{number.weekNumber}</option>
+                    <option key={number._id} value={key}>{number?.weekNumber}</option>
                   ))}
                 </Select>
-                {/* <Button onClick={print} variant="contained" >print</Button> */}
+                <Button onClick={print} variant="contained" >print</Button>
               </FormControl>
               <MyTable
                 weekData={weeks[week]}
@@ -146,20 +154,17 @@ export default function WeekStats() {
               </div>
               <div className={classes.row}>
                 <div className={classes.column}>
+                  <div>Home team: {teams[homeTeam]?.teamName}</div>
                   <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="age-native-simple">Home</InputLabel>
+                    <InputLabel htmlFor="age-native-simple">Home Team</InputLabel>
                     <Select
                       native
-                      value={state.age}
-                      onChange={handleChange}
-                      inputProps={{
-                        name: 'age',
-                        id: 'age-native-simple',
-                      }}
+                      onChange={handleHomeTeam}
                     >
-                      <option value={1}>1</option>
-                      <option value={2}>2</option>
-                      <option value={3}>3</option>
+                      <option aria-label="None" />
+                      {teams?.map((number, key) => (
+                        <option key={number._id} value={key}>{number?.teamName}</option>
+                      ))}
                     </Select>
                   </FormControl>
                   <TextField
@@ -206,20 +211,17 @@ export default function WeekStats() {
                   />
                 </div>
                 <div className={classes.column}>
+                  <div>Away team: {teams[awayTeam]?.teamName}</div>
                   <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="age-native-simple">Away</InputLabel>
+                    <InputLabel htmlFor="age-native-simple">Away Team</InputLabel>
                     <Select
                       native
-                      value={state.age}
-                      onChange={handleChange}
-                      inputProps={{
-                        name: 'age',
-                        id: 'age-native-simple',
-                      }}
+                      onChange={handleAwayTeam}
                     >
-                      <option value={1}>1</option>
-                      <option value={2}>2</option>
-                      <option value={3}>3</option>
+                      <option aria-label="None" />
+                      {teams?.map((number, key) => (
+                        <option key={number._id} value={key}>{number?.teamName}</option>
+                      ))}
                     </Select>
                   </FormControl>
                   <TextField
@@ -262,7 +264,7 @@ export default function WeekStats() {
               </div>
             </CardBody>
             <CardFooter>
-              <Button type="submit" color="info">Update Profile</Button>
+              <Button disabled={isDisabled} type="submit" color="info">Update Profile</Button>
             </CardFooter>
           </Card>
         </form>
