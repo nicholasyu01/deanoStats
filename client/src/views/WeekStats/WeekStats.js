@@ -34,6 +34,7 @@ const styles = theme => ({
 
 const useStyles = makeStyles(styles);
 
+//TODO clear form after submition
 export default function WeekStats() {
   const classes = useStyles();
 
@@ -63,8 +64,31 @@ export default function WeekStats() {
     }
     axios.post('/api/weeks/update/' + weeks[week]?._id, data)
       .then(
-        updateWeeks()
+        updateWeeks(),
+        // event.target.reset()
       )
+      .catch((err) => console.log(err));
+
+    const homeTeamData = {
+      teamName: teams[homeTeam]?.teamName,
+      teamDivision: teams[homeTeam]?.teamDivision,
+      games: {
+        gameNumber: event.target.gameNumber.value,
+      }
+    }
+    axios.post('/api/teams/update/' + teams[homeTeam]?._id, homeTeamData)
+      .then()
+      .catch((err) => console.log(err));
+
+    const awayTeamData = {
+      teamName: teams[awayTeam]?.teamName,
+      teamDivision: teams[awayTeam]?.teamDivision,
+      games: {
+        gameNumber: event.target.gameNumber.value,
+      }
+    }
+    axios.post('/api/teams/update/' + teams[awayTeam]?._id, awayTeamData)
+      .then()
       .catch((err) => console.log(err));
   }
 
@@ -95,6 +119,7 @@ export default function WeekStats() {
     axios.get('/api/weeks')
       .then(w => {
         setWeeks(w.data);
+        // document.getElementById("gameForm").reset();
       })
       .catch(function (error) {
         console.log(error);
@@ -109,7 +134,7 @@ export default function WeekStats() {
       .catch(function (error) {
         console.log(error);
       })
-    axios.get('/api/teams')
+    axios.get('/api/teams/teamNames')
       .then(teams => {
         setTeams(teams.data);
       })
@@ -127,37 +152,38 @@ export default function WeekStats() {
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
-        <form onSubmit={onSubmit}>
-          <Card>
-            <CardBody>
-              <div className={classes.typo}>
-                <h3><b>Week Stats</b> week: {weeks[week]?.weekNumber}</h3>
-              </div>
-              <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-native-simple">Week</InputLabel>
-                <Select
-                  native
-                  onChange={setWeekNumber}
-                >
-                  <option aria-label="None" />
-                  {weeks?.map((number, key) => (
-                    <option key={number._id} value={key}>{number?.weekNumber}</option>
-                  ))}
-                </Select>
-                <Button onClick={print} variant="contained" >print</Button>
-              </FormControl>
-              <MyTable
-                weekData={weeks[week]}
-              />
-              <div className={classes.typo}>
-                <h3>Enter Game</h3>
-              </div>
+        <Card>
+          <CardBody>
+            <div className={classes.typo}>
+              <h3><b>Week Stats</b> week: {weeks[week]?.weekNumber}</h3>
+            </div>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="age-native-simple">Week</InputLabel>
+              <Select
+                native
+                onChange={setWeekNumber}
+              >
+                <option aria-label="None" />
+                {weeks?.map((number, key) => (
+                  <option key={number._id} value={key}>{number?.weekNumber}</option>
+                ))}
+              </Select>
+              <Button onClick={print} variant="contained" >print</Button>
+            </FormControl>
+            <MyTable
+              weekData={weeks[week]}
+            />
+            <div className={classes.typo}>
+              <h3>Enter Game</h3>
+            </div>
+            <form onSubmit={onSubmit} id="gameForm">
               <div className={classes.row}>
                 <div className={classes.column}>
                   <div>Home team: {teams[homeTeam]?.teamName}</div>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="age-native-simple">Home Team</InputLabel>
                     <Select
+                      required
                       native
                       onChange={handleHomeTeam}
                     >
@@ -215,6 +241,7 @@ export default function WeekStats() {
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="age-native-simple">Away Team</InputLabel>
                     <Select
+                      required
                       native
                       onChange={handleAwayTeam}
                     >
@@ -262,12 +289,10 @@ export default function WeekStats() {
                   />
                 </div>
               </div>
-            </CardBody>
-            <CardFooter>
               <Button disabled={isDisabled} type="submit" color="info">Update Profile</Button>
-            </CardFooter>
-          </Card>
-        </form>
+            </form>
+          </CardBody>
+        </Card>
       </GridItem>
     </GridContainer>
   );

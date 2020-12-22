@@ -5,23 +5,31 @@ const router = express.Router();
 const Week = require('../../models/Week');
 
 //GET all todos
-router.get("/", (req, res) => {
+router.get("/", (req, res, next) => {
     console.log("GET all week");
-    Week.find(function (err, team) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.json(team);
-        }
+    var query = Week.find({}).select({});
+
+    query.exec(function (err, someValue) {
+        if (err) 
+            return next(err);
+        res.send(someValue);
     });
+    
+    // Week.find({ weekNumber: 0}, function (err, week) {
+    //     if (err) {
+    //         console.log(err);
+    //     } else {
+    //         res.json(week);
+    //     }
+    // });
 });
 
 
 // //GET a todo
-router.route('/:id').get(function(req, res) {
+router.route('/:id').get(function (req, res) {
     console.log("GET week");
     let id = req.params.id;
-    Week.findById(id, function(err, week) {
+    Week.findById(id, function (err, week) {
         res.json(week);
     });
 });
@@ -38,21 +46,21 @@ router.post("/add", (req, res) => {
         .catch(err => console.log(err));
 });
 
-//UPDATE today
-router.route('/update/:id').post(function(req, res) {
-    Week.findById(req.params.id, function(err, week) {
-        if (!week)
+//add game to week
+router.route('/update/:id').post(function (req, res) {
+    Week.findById(req.params.id, function (err, week) {
+        if (!week) {
             res.status(404).send("data is not found");
-        else
+        } else {
             week.weekNumber = req.body.weekNumber;
             week.games.push(req.body.games);
-
             week.save().then(week => {
                 res.status(200).json(week);
             })
-            .catch(err => {
-                res.status(400).send("Update not possible");
-            });
+                .catch(err => {
+                    res.status(400).send("Update not possible");
+                });
+        }
     });
 });
 
