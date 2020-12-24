@@ -18,10 +18,10 @@ router.get("/", (req, res) => {
 
 //GET all teams without games
 router.get("/teamNames", (req, res, next) => {
-    var query = Team.find({}).select({'games': 0});
+    var query = Team.find({}).select({ 'games': 0 });
 
     query.exec(function (err, someValue) {
-        if (err) 
+        if (err)
             return next(err);
         res.send(someValue);
     });
@@ -67,5 +67,20 @@ router.route('/update/:id').post(function (req, res) {
     });
 });
 
+
+router.route("/put/:id").put(function (req, res) {
+    Team.updateOne({ _id: req.params.id }, {$push: { games: req.body }},
+        function (
+            err,
+            result
+        ) {
+            console.log("put week")
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(result);
+            }
+        });
+});
 
 module.exports = router;

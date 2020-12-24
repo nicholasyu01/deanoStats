@@ -5,13 +5,13 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardBody from "components/Card/CardBody.js";
 import Button from "components/CustomButtons/Button.js";
-import CardFooter from "components/Card/CardFooter.js";
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import MyTable from "components/Table/MyTable.js";
+import WeekTable from "components/Table/WeekTable.js";
+import { Test } from "components/api/api.js"
 
 const styles = theme => ({
   formControl: {
@@ -41,62 +41,35 @@ export default function WeekStats() {
   const onSubmit = (event) => {
     event.preventDefault()
     const data = {
-      weekNumber: 1 + parseInt(week, 10),
-      games: {
-        gameNumber: event.target.gameNumber.value,
-        homeTeamId: teams[homeTeam]?._id,
-        homeTeamName: teams[homeTeam]?.teamName,
-        homePoints: event.target.homePoints.value,
-        homeRY: event.target.homeRY.value,
-        homePY: event.target.homePY.value,
-        homeSacks: event.target.homeSacks.value,
-        homeTO: event.target.homeTO.value,
-        homeSpread: event.target.homeSpread.value,
-        awayTeamId: teams[awayTeam]?._id,
-        awayTeamName: teams[awayTeam]?.teamName,
-        awayPoints: event.target.awayPoints.value,
-        awayRY: event.target.awayRY.value,
-        awayPY: event.target.awayPY.value,
-        awaySacks: event.target.awaySacks.value,
-        awayTO: event.target.awayTO.value,
-        awaySpread: event.target.awaySpread.value,
-      }
+      gameNumber: event.target.gameNumber.value,
     }
-    axios.post('/api/weeks/update/' + weeks[week]?._id, data)
-      .then(
-        updateWeeks(),
-        // event.target.reset()
-      )
+    axios.post('/api/games/add/', data)
+      .then(game => {
+        //TODO only put gameId in games array to lessen duplicate data
+        // const gameId = {
+        //   gameId: game.data._id
+        // }
+        axios.put('/api/weeks/put/' + weeks[week]?._id, game.data)
+          .then(
+            updateWeeks()
+          )
+          .catch((err) => console.log(err))
+        axios.put('/api/teams/put/' + homeTeamId, game.data)
+          .then()
+          .catch((err) => console.log(err))
+        axios.put('/api/teams/put/' + awayTeamId, game.data)
+          .then()
+          .catch((err) => console.log(err))
+      })
       .catch((err) => console.log(err));
 
-    const homeTeamData = {
-      teamName: teams[homeTeam]?.teamName,
-      teamDivision: teams[homeTeam]?.teamDivision,
-      games: {
-        gameNumber: event.target.gameNumber.value,
-      }
-    }
-    axios.post('/api/teams/update/' + teams[homeTeam]?._id, homeTeamData)
-      .then()
-      .catch((err) => console.log(err));
-
-    const awayTeamData = {
-      teamName: teams[awayTeam]?.teamName,
-      teamDivision: teams[awayTeam]?.teamDivision,
-      games: {
-        gameNumber: event.target.gameNumber.value,
-      }
-    }
-    axios.post('/api/teams/update/' + teams[awayTeam]?._id, awayTeamData)
-      .then()
-      .catch((err) => console.log(err));
   }
 
   const [weeks, setWeeks] = useState([]);
-  const [week, setWeek] = useState("");
-  const [teams, setTeams] = useState([])
-  const [homeTeam, setHomeTeam] = useState();
-  const [awayTeam, setAwayTeam] = useState();
+  const [week, setWeek] = useState();
+  const [teamNames, setTeams] = useState([])
+  const [homeTeamId, setHomeTeam] = useState();
+  const [awayTeamId, setAwayTeam] = useState();
   const [isDisabled, setIsDisabled] = useState(true);
 
   const setWeekNumber = (event) => {
@@ -147,6 +120,10 @@ export default function WeekStats() {
     console.log(weeks)
     console.log(week)
     console.log(weeks[week]?._id)
+    Test()
+    console.log(awayTeamId)
+    console.log(homeTeamId)
+
   }
 
   return (
@@ -170,7 +147,7 @@ export default function WeekStats() {
               </Select>
               <Button onClick={print} variant="contained" >print</Button>
             </FormControl>
-            <MyTable
+            <WeekTable
               weekData={weeks[week]}
             />
             <div className={classes.typo}>
@@ -179,7 +156,6 @@ export default function WeekStats() {
             <form onSubmit={onSubmit} id="gameForm">
               <div className={classes.row}>
                 <div className={classes.column}>
-                  <div>Home team: {teams[homeTeam]?.teamName}</div>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="age-native-simple">Home Team</InputLabel>
                     <Select
@@ -188,8 +164,8 @@ export default function WeekStats() {
                       onChange={handleHomeTeam}
                     >
                       <option aria-label="None" />
-                      {teams?.map((number, key) => (
-                        <option key={number._id} value={key}>{number?.teamName}</option>
+                      {teamNames?.map((number, key) => (
+                        <option key={number._id} value={number._id}>{number?.teamName}</option>
                       ))}
                     </Select>
                   </FormControl>
@@ -237,7 +213,6 @@ export default function WeekStats() {
                   />
                 </div>
                 <div className={classes.column}>
-                  <div>Away team: {teams[awayTeam]?.teamName}</div>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="age-native-simple">Away Team</InputLabel>
                     <Select
@@ -246,8 +221,8 @@ export default function WeekStats() {
                       onChange={handleAwayTeam}
                     >
                       <option aria-label="None" />
-                      {teams?.map((number, key) => (
-                        <option key={number._id} value={key}>{number?.teamName}</option>
+                      {teamNames?.map((number, key) => (
+                        <option key={number._id} value={number._id}>{number?.teamName}</option>
                       ))}
                     </Select>
                   </FormControl>

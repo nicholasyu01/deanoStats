@@ -15,6 +15,7 @@ const styles = theme => ({
             boarderColor: 'black',
             borderStyle: 'solid',
         },
+        padding: "5px"
     },
     container: {
         padding: "5px",
@@ -22,7 +23,7 @@ const styles = theme => ({
 });
 const useStyles = makeStyles(styles);
 
-export default function MyTable(props) {
+export default function TeamTable(props) {
     const { weekData } = props;
     const classes = useStyles(styles);
 
@@ -51,8 +52,8 @@ export default function MyTable(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {weekData?.games.map((row) => (
-                        <TableRow key={row.gameNumber}>
+                    {weekData?.games.map((row, key) => (
+                        <TableRow key={key}>
                             <TableCell className={classes.border} padding="none" >{row.gameNumber}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.homeTeamName}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.homePoints}</TableCell>

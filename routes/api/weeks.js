@@ -10,11 +10,11 @@ router.get("/", (req, res, next) => {
     var query = Week.find({}).select({});
 
     query.exec(function (err, someValue) {
-        if (err) 
+        if (err)
             return next(err);
         res.send(someValue);
     });
-    
+
     // Week.find({ weekNumber: 0}, function (err, week) {
     //     if (err) {
     //         console.log(err);
@@ -62,6 +62,21 @@ router.route('/update/:id').post(function (req, res) {
                 });
         }
     });
+});
+
+router.route("/put/:id").put(function (req, res) {
+    Week.updateOne({ _id: req.params.id }, {$push: { games: req.body }},
+        function (
+            err,
+            result
+        ) {
+            console.log("put week")
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(result);
+            }
+        });
 });
 
 
