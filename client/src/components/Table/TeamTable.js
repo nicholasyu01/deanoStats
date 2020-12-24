@@ -24,7 +24,7 @@ const styles = theme => ({
 const useStyles = makeStyles(styles);
 
 export default function TeamTable(props) {
-    const { weekData } = props;
+    const { teamData } = props;
     const classes = useStyles(styles);
 
     //TODO make the table more module to be used by any data
@@ -33,42 +33,45 @@ export default function TeamTable(props) {
             <Table >
                 <TableHead>
                     <TableRow>
-                        <TableCell className={classes.border} padding="none">Game</TableCell>
-                        <TableCell className={classes.border} padding="none">homeTeam</TableCell>
-                        <TableCell className={classes.border} padding="none">homePoints</TableCell>
-                        <TableCell className={classes.border} padding="none">homeRY</TableCell>
-                        <TableCell className={classes.border} padding="none">homePY</TableCell>
-                        <TableCell className={classes.border} padding="none">homeSacks</TableCell>
-                        <TableCell className={classes.border} padding="none">homeTO</TableCell>
-                        <TableCell className={classes.border} padding="none">homeSpread</TableCell>
-                        <TableCell className={classes.border} padding="none">awayTeam</TableCell>
-                        <TableCell className={classes.border} padding="none">awayPoints</TableCell>
-                        <TableCell className={classes.border} padding="none">awayRY</TableCell>
-                        <TableCell className={classes.border} padding="none">awayPY</TableCell>
-                        <TableCell className={classes.border} padding="none">awaySacks</TableCell>
-                        <TableCell className={classes.border} padding="none">awayTO</TableCell>
-                        <TableCell className={classes.border} padding="none">awaySpread</TableCell>
-
+                        <TableCell className={classes.border} padding="none">Week</TableCell>
+                        <TableCell className={classes.border} padding="none">Date</TableCell>
+                        <TableCell className={classes.border} padding="none">Day</TableCell>
+                        <TableCell className={classes.border} padding="none">Time</TableCell>
+                        <TableCell className={classes.border} padding="none">Team</TableCell>
+                        <TableCell className={classes.border} padding="none">Location</TableCell>
+                        <TableCell className={classes.border} padding="none">{teamData?.teamName}</TableCell>
+                        <TableCell className={classes.border} padding="none">Opponent</TableCell>
+                        <TableCell className={classes.border} padding="none">Game Result</TableCell>
+                        <TableCell className={classes.border} padding="none">Spread</TableCell>
+                        <TableCell className={classes.border} padding="none">Spread Result</TableCell>
+                        <TableCell className={classes.border} padding="none">Total Points</TableCell>
+                        <TableCell className={classes.border} padding="none">Over/Under</TableCell>
+                        <TableCell className={classes.border} padding="none">Over/Under Result</TableCell>
+                        <TableCell className={classes.border} padding="none">Stadium</TableCell>
+                        <TableCell className={classes.border} padding="none">Field</TableCell>
+                        <TableCell className={classes.border} padding="none"></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {weekData?.games.map((row, key) => (
+                    {teamData?.games.map((row, key) => (
                         <TableRow key={key}>
-                            <TableCell className={classes.border} padding="none" >{row.gameNumber}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.homeTeamName}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.homePoints}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.homeRY}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.homePY}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.homeSacks}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.homeTO}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.homeSpread}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.awayTeamName}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.awayPoints}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.awayRY}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.awayPY}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.awaySacks}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.awayTO}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.awaySpread}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.weekNumber}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.date}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.day}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.time}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.opposingTeam}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.location}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.teamScore}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.opposingScore}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.gameResult}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.spread}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.spreadResult}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.totalPoints}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.overUnder}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.overUnderResult}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.stadiumType}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.fieldType}</TableCell>
+                            <TableCell className={classes.border} padding="none"></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -78,5 +81,5 @@ export default function TeamTable(props) {
 }
 
 // MyTable.propTypes = {
-//     weekData: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
+//     teamData: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
 // };

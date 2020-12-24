@@ -73,7 +73,7 @@ export default function TeamStats() {
                             </Select>
                         </FormControl>
                         <TeamTable
-                            weekData={teams[team]}
+                            teamData={teams[team]}
                         />
                     </CardBody>
                 </Card>

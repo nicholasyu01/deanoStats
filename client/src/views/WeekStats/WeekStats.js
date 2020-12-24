@@ -41,7 +41,27 @@ export default function WeekStats() {
   const onSubmit = (event) => {
     event.preventDefault()
     const data = {
-      gameNumber: event.target.gameNumber.value,
+      weekNumber: 1 + parseInt(week, 10),
+      date: event.target.date.value,
+      day: event.target.day.value,
+      time: event.target.time.value,
+      homeTeamId: teams[homeTeam]._id,
+      homeTeamName: teams[homeTeam].teamName,
+      homePoints: event.target.homePoints.value,
+      homeRY: event.target.homeRY.value,
+      homePY: event.target.homePY.value,
+      homeSacks: event.target.homeSacks.value,
+      homeTO: event.target.homeTO.value,
+      homeSpread: event.target.homeSpread.value,
+      awayTeamId: teams[awayTeam]._id,
+      awayTeamName: teams[awayTeam].teamName,
+      awayPoints: event.target.awayPoints.value,
+      awayRY: event.target.awayRY.value,
+      awayPY: event.target.awayPY.value,
+      awaySacks: event.target.awaySacks.value,
+      awayTO: event.target.awayTO.value,
+      awaySpread: event.target.awaySpread.value,
+      overUnder: event.target.overUnder.value,
     }
     axios.post('/api/games/add/', data)
       .then(game => {
@@ -49,15 +69,58 @@ export default function WeekStats() {
         // const gameId = {
         //   gameId: game.data._id
         // }
+        var total = parseInt(game.data.homePoints, 10) + parseInt(game.data.awayPoints, 10);
+        var homeDiff = parseInt(game.data.homePoints, 10) - parseInt(game.data.awayPoints, 10);
+        var awayDiff = parseInt(game.data.awayPoint, 10) - parseInt(game.data.homePoints, 10);
+        const homeTeamData = {
+          gameId: game.data._id,
+          weekNumber: game.data.weekNumber,
+          date: game.data.date,
+          day: game.data.day,
+          time: game.data.time,
+          team: teams[homeTeam].teamName,
+          opposingteam: teams[awayTeam].teamName,
+          location: "Home",
+          teamScore: game.data.homePoints,
+          opposingScore: game.data.awayPoints,
+          spread: game.data.homeSpread,
+          gameResult: parseInt(game.data.homePoints, 10) > parseInt(game.data.awayPoints, 10) ? "Win" : "Loss",
+          spreadResult: homeDiff > game.data.homeSpread ? "Win" : "Loss",
+          totalPoints: parseInt(game.data.homePoints, 10) + parseInt(game.data.awayPoints, 10),
+          overUnder: game.data.overUnder,
+          overUnderResult: total > parseInt(game.data.overUnder, 10) ? "Win" : "Loss",
+          stadiumType: teams[homeTeam].stadiumType,
+          fieldType: teams[homeTeam].fieldType,
+        }
+        const awayTeamData = {
+          gameId: game.data._id,
+          weekNumber: game.data.weekNumber,
+          date: game.data.date,
+          day: game.data.day,
+          time: game.data.time,
+          team: teams[awayTeam].teamName,
+          opposingteam: teams[homeTeam].teamName,
+          location: "Away",
+          teamScore: game.data.awayPoints,
+          opposingScore: game.data.homePoints,
+          spread: game.data.homeSpread,
+          gameResult: parseInt(game.data.homePoints, 10) < parseInt(game.data.awayPoints, 10) ? "Win" : "Loss",
+          spreadResult: awayDiff > game.data.awaySpread ? "Win" : "Loss",
+          totalPoints: parseInt(game.data.homePoints, 10) + parseInt(game.data.awayPoints, 10),
+          overUnder: game.data.overUnder,
+          overUnderResult: total > parseInt(game.data.overUnder, 10) ? "Win" : "Loss",
+          stadiumType: teams[homeTeam].stadiumType,
+          fieldType: teams[homeTeam].fieldType,
+        }
         axios.put('/api/weeks/put/' + weeks[week]?._id, game.data)
           .then(
             updateWeeks()
           )
           .catch((err) => console.log(err))
-        axios.put('/api/teams/put/' + homeTeamId, game.data)
+        axios.put('/api/teams/put/' + teams[homeTeam]._id, homeTeamData)
           .then()
           .catch((err) => console.log(err))
-        axios.put('/api/teams/put/' + awayTeamId, game.data)
+        axios.put('/api/teams/put/' + teams[awayTeam]._id, awayTeamData)
           .then()
           .catch((err) => console.log(err))
       })
@@ -67,9 +130,9 @@ export default function WeekStats() {
 
   const [weeks, setWeeks] = useState([]);
   const [week, setWeek] = useState();
-  const [teamNames, setTeams] = useState([])
-  const [homeTeamId, setHomeTeam] = useState();
-  const [awayTeamId, setAwayTeam] = useState();
+  const [teams, setTeams] = useState([])
+  const [homeTeam, setHomeTeam] = useState();
+  const [awayTeam, setAwayTeam] = useState();
   const [isDisabled, setIsDisabled] = useState(true);
 
   const setWeekNumber = (event) => {
@@ -121,8 +184,6 @@ export default function WeekStats() {
     console.log(week)
     console.log(weeks[week]?._id)
     Test()
-    console.log(awayTeamId)
-    console.log(homeTeamId)
 
   }
 
@@ -156,6 +217,31 @@ export default function WeekStats() {
             <form onSubmit={onSubmit} id="gameForm">
               <div className={classes.row}>
                 <div className={classes.column}>
+                  <div className={classes.row}>
+                    <TextField
+                      className={classes.formControl}
+                      id="date"
+                      label="Date"
+                    />
+                    <TextField
+                      className={classes.formControl}
+                      id="day"
+                      label="Day"
+                    />
+                    <TextField
+                      className={classes.formControl}
+                      id="time"
+                      label="Time"
+                    />
+                  </div>
+                  <TextField
+                    className={classes.formControl}
+                    id="overUnder"
+                    label="Over Under"
+                    type="number"
+                  />
+                </div>
+                <div className={classes.column}>
                   <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="age-native-simple">Home Team</InputLabel>
                     <Select
@@ -164,8 +250,8 @@ export default function WeekStats() {
                       onChange={handleHomeTeam}
                     >
                       <option aria-label="None" />
-                      {teamNames?.map((number, key) => (
-                        <option key={number._id} value={number._id}>{number?.teamName}</option>
+                      {teams?.map((number, key) => (
+                        <option key={number._id} value={key}>{number?.teamName}</option>
                       ))}
                     </Select>
                   </FormControl>
@@ -205,12 +291,7 @@ export default function WeekStats() {
                     label="Home Spread"
                     type="number"
                   />
-                  <TextField
-                    className={classes.formControl}
-                    id="gameNumber"
-                    label="game number"
-                    type="number"
-                  />
+
                 </div>
                 <div className={classes.column}>
                   <FormControl className={classes.formControl}>
@@ -221,8 +302,8 @@ export default function WeekStats() {
                       onChange={handleAwayTeam}
                     >
                       <option aria-label="None" />
-                      {teamNames?.map((number, key) => (
-                        <option key={number._id} value={number._id}>{number?.teamName}</option>
+                      {teams?.map((number, key) => (
+                        <option key={number._id} value={key}>{number?.teamName}</option>
                       ))}
                     </Select>
                   </FormControl>

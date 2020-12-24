@@ -7,7 +7,7 @@ const Game = require('../../models/Game');
 //GET all todos
 router.get("/", (req, res) => {
     console.log("GET all games");
-    Game.find(function(err, game) {
+    Game.find(function (err, game) {
         if (err) {
             console.log(err);
         } else {
@@ -30,7 +30,27 @@ router.get("/", (req, res) => {
 router.post("/add", (req, res) => {
     console.log("post game");
     const game = new Game({
-        gameNumber: req.body.gameNumber
+        weekNumber: req.body.weekNumber,
+        date: req.body.date,
+        day: req.body.day,
+        time: req.body.time,
+        homeTeamId: req.body.homeTeamId,
+        homeTeamName: req.body.homeTeamName,
+        homePoints: req.body.homePoints,
+        homeRY: req.body.homeRY,
+        homePY: req.body.homePY,
+        homeSacks: req.body.homeSacks,
+        homeTO: req.body.homeTO,
+        homeSpread: req.body.homeSpread,
+        awayTeamId: req.body.awayTeamId,
+        awayTeamName: req.body.awayTeamName,
+        awayPoints: req.body.awayPoints,
+        awayRY: req.body.awayRY,
+        awayPY: req.body.awayPY,
+        awaySacks: req.body.awaySacks,
+        awayTO: req.body.awayTO,
+        awaySpread: req.body.awaySpread,
+        overUnder: req.body.overUnder,
     });
     game
         .save()
