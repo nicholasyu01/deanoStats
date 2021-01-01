@@ -46,7 +46,7 @@ export default function TeamTable(props) {
                         <TableCell className={classes.border} padding="none">Spread Result</TableCell>
                         <TableCell className={classes.border} padding="none">Total Points</TableCell>
                         <TableCell className={classes.border} padding="none">Over/Under</TableCell>
-                        <TableCell className={classes.border} padding="none">Over/Under Result</TableCell>
+                        <TableCell className={classes.border} padding="none">Ov/Un Result</TableCell>
                         <TableCell className={classes.border} padding="none">Stadium</TableCell>
                         <TableCell className={classes.border} padding="none">Field</TableCell>
                         <TableCell className={classes.border} padding="none"></TableCell>

@@ -51,7 +51,8 @@ export default function WeekStats() {
       homeRY: event.target.homeRY.value,
       homePY: event.target.homePY.value,
       homeSacks: event.target.homeSacks.value,
-      homeTO: event.target.homeTO.value,
+      homeIT: event.target.homeIT.value,
+      homeFumbles: event.target.homeFumbles.value,
       homeSpread: event.target.homeSpread.value,
       awayTeamId: teams[awayTeam]._id,
       awayTeamName: teams[awayTeam].teamName,
@@ -59,7 +60,8 @@ export default function WeekStats() {
       awayRY: event.target.awayRY.value,
       awayPY: event.target.awayPY.value,
       awaySacks: event.target.awaySacks.value,
-      awayTO: event.target.awayTO.value,
+      awayIT: event.target.awayIT.value,
+      awayFumbles: event.target.awayFumbles.value,
       awaySpread: event.target.awaySpread.value,
       overUnder: event.target.overUnder.value,
     }
@@ -70,8 +72,75 @@ export default function WeekStats() {
         //   gameId: game.data._id
         // }
         var total = parseInt(game.data.homePoints, 10) + parseInt(game.data.awayPoints, 10);
+        //overUnderResults
+        var overUnderResult = "failed";
+        if (total > parseInt(game.data.overUnder, 10)) {
+          overUnderResult = "Win"
+        }
+        if (total < parseInt(game.data.overUnder, 10)) {
+          overUnderResult = "Loss"
+        }
+        if (total === parseInt(game.data.overUnder, 10)) {
+          overUnderResult = "Tie"
+        }
+
+        //homeSpreadResult calculations
         var homeDiff = parseInt(game.data.homePoints, 10) - parseInt(game.data.awayPoints, 10);
-        var awayDiff = parseInt(game.data.awayPoint, 10) - parseInt(game.data.homePoints, 10);
+        var homeSpreadResult = "failed";
+        if (game.data.homeSpread < 0) { //favoured team
+          if (homeDiff < 0) {
+            homeSpreadResult = "Loss"
+          } else if (homeDiff === 0) {
+            homeSpreadResult = "Tie"
+          } else if (Math.abs(homeDiff) > parseInt(game.data.homeSpread, 10)) {
+            homeSpreadResult = "Win"
+          } else if (Math.abs(homeDiff) < parseInt(game.data.homeSpread, 10)) {
+            homeSpreadResult = "Loss"
+          } else if (Math.abs(homeDiff) === parseInt(game.data.homeSpread, 10)) {
+            homeSpreadResult = "Tie"
+          }
+        } else { //non favoured underdog team
+          if (homeDiff > 0) {
+            homeSpreadResult = "Win"
+          } else if (homeDiff === 0) {
+            homeSpreadResult = "Tie"
+          } else if (Math.abs(homeDiff) < parseInt(game.data.homeSpread, 10)) {
+            homeSpreadResult = "Loss"
+          } else if (Math.abs(homeDiff) > parseInt(game.data.homeSpread, 10)) {
+            homeSpreadResult = "Win"
+          } else if (Math.abs(homeDiff) === parseInt(game.data.homeSpread, 10)) {
+            homeSpreadResult = "Tie"
+          }
+        }
+
+        //awaySpreadResult calculation
+        var awayDiff = parseInt(game.data.awayPoints, 10) - parseInt(game.data.homePoints, 10);
+        var awaySpreadResult = "failed";
+        if (game.data.awaySpread < 0) { //favoured team
+          if (awayDiff < 0) {
+            awaySpreadResult = "Loss"
+          } else if (awayDiff === 0) {
+            awaySpreadResult = "Tie"
+          } else if (Math.abs(awayDiff) > parseInt(game.data.homeSpread, 10)) {
+            awaySpreadResult = "Win"
+          } else if (Math.abs(awayDiff) < parseInt(game.data.homeSpread, 10)) {
+            awaySpreadResult = "Loss"
+          } else if (Math.abs(awayDiff) === parseInt(game.data.homeSpread, 10)) {
+            awaySpreadResult = "Tie"
+          }
+        } else { //non favoured underdog team
+          if (awayDiff > 0) {
+            awaySpreadResult = "Win"
+          } else if (awayDiff === 0) {
+            awaySpreadResult = "Tie"
+          } else if (Math.abs(awayDiff) < parseInt(game.data.homeSpread, 10)) {
+            awaySpreadResult = "Loss"
+          } else if (Math.abs(awayDiff) > parseInt(game.data.homeSpread, 10)) {
+            awaySpreadResult = "Win"
+          } else if (Math.abs(awayDiff) === parseInt(game.data.homeSpread, 10)) {
+            awaySpreadResult = "Tie"
+          }
+        }
         const homeTeamData = {
           gameId: game.data._id,
           weekNumber: game.data.weekNumber,
@@ -79,16 +148,16 @@ export default function WeekStats() {
           day: game.data.day,
           time: game.data.time,
           team: teams[homeTeam].teamName,
-          opposingteam: teams[awayTeam].teamName,
+          opposingTeam: teams[awayTeam].teamName,
           location: "Home",
           teamScore: game.data.homePoints,
           opposingScore: game.data.awayPoints,
           spread: game.data.homeSpread,
           gameResult: parseInt(game.data.homePoints, 10) > parseInt(game.data.awayPoints, 10) ? "Win" : "Loss",
-          spreadResult: homeDiff > game.data.homeSpread ? "Win" : "Loss",
+          spreadResult: homeSpreadResult,
           totalPoints: parseInt(game.data.homePoints, 10) + parseInt(game.data.awayPoints, 10),
           overUnder: game.data.overUnder,
-          overUnderResult: total > parseInt(game.data.overUnder, 10) ? "Win" : "Loss",
+          overUnderResult: overUnderResult,
           stadiumType: teams[homeTeam].stadiumType,
           fieldType: teams[homeTeam].fieldType,
         }
@@ -99,16 +168,16 @@ export default function WeekStats() {
           day: game.data.day,
           time: game.data.time,
           team: teams[awayTeam].teamName,
-          opposingteam: teams[homeTeam].teamName,
+          opposingTeam: teams[homeTeam].teamName,
           location: "Away",
           teamScore: game.data.awayPoints,
           opposingScore: game.data.homePoints,
-          spread: game.data.homeSpread,
+          spread: game.data.awaySpread,
           gameResult: parseInt(game.data.homePoints, 10) < parseInt(game.data.awayPoints, 10) ? "Win" : "Loss",
-          spreadResult: awayDiff > game.data.awaySpread ? "Win" : "Loss",
+          spreadResult: awaySpreadResult,
           totalPoints: parseInt(game.data.homePoints, 10) + parseInt(game.data.awayPoints, 10),
           overUnder: game.data.overUnder,
-          overUnderResult: total > parseInt(game.data.overUnder, 10) ? "Win" : "Loss",
+          overUnderResult: overUnderResult,
           stadiumType: teams[homeTeam].stadiumType,
           fieldType: teams[homeTeam].fieldType,
         }
@@ -281,8 +350,14 @@ export default function WeekStats() {
                   />
                   <TextField
                     className={classes.formControl}
-                    id="homeTO"
-                    label="Turn Overs"
+                    id="homeIT"
+                    label="Interceptions Thrown"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="homeFumbles"
+                    label="Fumbles"
                     type="number"
                   />
                   <TextField
@@ -333,8 +408,14 @@ export default function WeekStats() {
                   />
                   <TextField
                     className={classes.formControl}
-                    id="awayTO"
-                    label="Turn Overs"
+                    id="awayIT"
+                    label="Interceptions Thrown"
+                    type="number"
+                  />
+                  <TextField
+                    className={classes.formControl}
+                    id="awayFumbles"
+                    label="Fumbles"
                     type="number"
                   />
                   <TextField

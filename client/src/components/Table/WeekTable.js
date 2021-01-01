@@ -33,21 +33,6 @@ export default function WeekTable(props) {
             <Table >
                 <TableHead>
                     <TableRow>
-                        {/* <TableCell className={classes.border} padding="none">Game</TableCell>
-                        <TableCell className={classes.border} padding="none">homeTeam</TableCell>
-                        <TableCell className={classes.border} padding="none">homePoints</TableCell>
-                        <TableCell className={classes.border} padding="none">homeRY</TableCell>
-                        <TableCell className={classes.border} padding="none">homePY</TableCell>
-                        <TableCell className={classes.border} padding="none">homeSacks</TableCell>
-                        <TableCell className={classes.border} padding="none">homeTO</TableCell>
-                        <TableCell className={classes.border} padding="none">homeSpread</TableCell>
-                        <TableCell className={classes.border} padding="none">awayTeam</TableCell>
-                        <TableCell className={classes.border} padding="none">awayPoints</TableCell>
-                        <TableCell className={classes.border} padding="none">awayRY</TableCell>
-                        <TableCell className={classes.border} padding="none">awayPY</TableCell>
-                        <TableCell className={classes.border} padding="none">awaySacks</TableCell>
-                        <TableCell className={classes.border} padding="none">awayTO</TableCell>
-                        <TableCell className={classes.border} padding="none">awaySpread</TableCell> */}
                         <TableCell className={classes.border} padding="none">Date</TableCell>
                         <TableCell className={classes.border} padding="none">Day</TableCell>
                         <TableCell className={classes.border} padding="none">Time</TableCell>
@@ -58,14 +43,16 @@ export default function WeekTable(props) {
                         <TableCell className={classes.border} padding="none">Home Spread</TableCell>
                         <TableCell className={classes.border} padding="none">Away Spread</TableCell>
                         <TableCell className={classes.border} padding="none">Over Under</TableCell>
+                        <TableCell className={classes.border} padding="none">Home Rush Yards</TableCell>
                         <TableCell className={classes.border} padding="none">Home Pass Yards</TableCell>
-                        <TableCell className={classes.border} padding="none">Home Rush Rush</TableCell>
-                        <TableCell className={classes.border} padding="none">Away Pass Yards</TableCell>
                         <TableCell className={classes.border} padding="none">Away Rush Yards</TableCell>
+                        <TableCell className={classes.border} padding="none">Away Pass Yards</TableCell>
                         <TableCell className={classes.border} padding="none">Home Sacks</TableCell>
                         <TableCell className={classes.border} padding="none">Away Sacks</TableCell>
-                        <TableCell className={classes.border} padding="none">Home Turn Overs</TableCell>
-                        <TableCell className={classes.border} padding="none">Away Turn Overs</TableCell>
+                        <TableCell className={classes.border} padding="none">Home Intercp Thrown</TableCell>
+                        <TableCell className={classes.border} padding="none">Home Fumbles</TableCell>
+                        <TableCell className={classes.border} padding="none">Away Intercep Thrown</TableCell>
+                        <TableCell className={classes.border} padding="none">Away Fumbles</TableCell>
                         <TableCell className={classes.border} padding="none"></TableCell>
 
                     </TableRow>
@@ -83,14 +70,16 @@ export default function WeekTable(props) {
                             <TableCell className={classes.border} padding="none">{row.homeSpread}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.awaySpread}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.overUnder}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.homePY}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.homeRY}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.awayPY}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.homePY}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.awayRY}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.awayPY}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.homeSacks}</TableCell>
                             <TableCell className={classes.border} padding="none">{row.awaySacks}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.homeTO}</TableCell>
-                            <TableCell className={classes.border} padding="none">{row.awayTO}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.homeIT}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.homeFumbles}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.awayIT}</TableCell>
+                            <TableCell className={classes.border} padding="none">{row.awayFumbles}</TableCell>
                             <TableCell className={classes.border} padding="none"></TableCell>
                         </TableRow>
                     ))}
