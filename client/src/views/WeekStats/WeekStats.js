@@ -275,7 +275,7 @@ export default function WeekStats() {
                   <option key={number._id} value={key}>{number?.weekNumber}</option>
                 ))}
               </Select>
-              <Button onClick={print} variant="contained" >print</Button>
+              {/* <Button onClick={print} variant="contained" >print</Button> */}
             </FormControl>
             <WeekTable
               weekData={weeks[week]}
